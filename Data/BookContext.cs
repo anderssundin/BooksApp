@@ -11,13 +11,10 @@ namespace BooksApp.Data
         }
 
         // Tabels to database
-        public DbSet<BookModel> Book { get; set; }
+        public DbSet<BookModel> Books { get; set; }
 
-        public DbSet<AuthorModel> Author { get; set; }
+        public DbSet<AuthorModel> Authors { get; set; }
 
-        public DbSet<GenreModel> Genre { get; set; }
-
-        public DbSet<LoanModel> Loan { get; set; }
     }
 
 }

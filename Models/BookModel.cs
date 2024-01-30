@@ -13,8 +13,10 @@ namespace BooksApp.Models{
 
         public bool Available { get; set; } = true;
 
-        public int AuthorId { get; set; }   
+        public int? AuthorId {get; set;}
 
-        public int GenreId { get; set; }    
+        public AuthorModel? Author {get; set;}
+
+       
     }
 }
