@@ -61,7 +61,23 @@ namespace BooksApp.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId")] BookModel bookModel, string? newAuthor)
         {
             if (ModelState.IsValid)
+
+
             {
+
+                if (newAuthor != null)
+                {
+                    AuthorModel author = new AuthorModel { Name = newAuthor };
+
+                    // Lägg till författaren i context och spara ändringar i databasen
+                    _context.Authors.Add(author);
+                    _context.SaveChanges();
+                    // Hämta Id för den nyligen tillagda författaren
+                    int newAuthorId = author.Id;
+
+                     bookModel.AuthorId = newAuthorId;
+                }
+
                 _context.Add(bookModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
