@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BooksApp.Data;
 using BooksApp.Models;
+using System.Runtime.CompilerServices;
 
 namespace BooksApp.Controllers
 {
@@ -48,7 +49,7 @@ namespace BooksApp.Controllers
         // GET: Book/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name");
             return View();
         }
 
@@ -57,7 +58,7 @@ namespace BooksApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId")] BookModel bookModel)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId")] BookModel bookModel, string? newAuthor)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +83,7 @@ namespace BooksApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", bookModel.AuthorId);
             return View(bookModel);
         }
 
@@ -118,7 +119,7 @@ namespace BooksApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", bookModel.AuthorId);
             return View(bookModel);
         }
 
