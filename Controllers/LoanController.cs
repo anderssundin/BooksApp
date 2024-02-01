@@ -7,47 +7,42 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BooksApp.Data;
 using BooksApp.Models;
-using System.Runtime.CompilerServices;
 
 namespace BooksApp.Controllers
 {
-    public class BookController : Controller
+    public class LoanController : Controller
     {
         private readonly BookContext _context;
 
-        public BookController(BookContext context)
+        public LoanController(BookContext context)
         {
             _context = context;
         }
 
-        // GET: Book
-        public async Task<IActionResult> Index()
-        {
-
-            var bookContext = _context.Books.Include(b => b.Author);
-            return View(await bookContext.ToListAsync());
-        }
+        // GET: Loan
+     
 
 
-        // SEARCH BOOK
-
-        // GET: Book
-        public async Task<IActionResult> Search(string? searchParam)
+         public async Task<IActionResult> Index(string? searchParam)
         {
             if (searchParam != null)
             {
                 string searchString = searchParam;
                 IEnumerable<BookModel> bookTitle = await _context.Books
                  .Where(b => EF.Functions.Like(b.Title, $"%{searchString}%"))
+                 .Include(c=> c.Author)
                 .ToListAsync();
 
 
                 return View(bookTitle);
             }
+            
               var bookContext = _context.Books.Include(b => b.Author);
+              
             return View(await bookContext.ToListAsync());
         }
-        // GET: Book/Details/5
+
+        // GET: Loan/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -57,7 +52,7 @@ namespace BooksApp.Controllers
 
             var bookModel = await _context.Books
                 .Include(b => b.Author)
-                .Include(c => c.User)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bookModel == null)
             {
@@ -67,50 +62,34 @@ namespace BooksApp.Controllers
             return View(bookModel);
         }
 
-        // GET: Book/Create
+        // GET: Loan/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name");
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: Book/Create
+        // POST: Loan/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId")] BookModel bookModel, string? newAuthor)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId,UserId,LoanDate")] BookModel bookModel)
         {
             if (ModelState.IsValid)
-
-
             {
-
-                if (newAuthor != null)
-                {
-                    AuthorModel author = new AuthorModel { Name = newAuthor };
-
-                    // Lägg till författaren i context och spara ändringar i databasen
-                    _context.Authors.Add(author);
-                    _context.SaveChanges();
-                    // Hämta Id för den nyligen tillagda författaren
-                    int newAuthorId = author.Id;
-
-                    bookModel.AuthorId = newAuthorId;
-                }
-
                 _context.Add(bookModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bookModel.UserId);
             return View(bookModel);
         }
 
-
-
-        // GET: Book/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Loan/Edit/5
+        public async Task<IActionResult> NewLoan(int? id)
         {
             if (id == null)
             {
@@ -123,15 +102,16 @@ namespace BooksApp.Controllers
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", bookModel.AuthorId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", bookModel.UserId);
             return View(bookModel);
         }
 
-        // POST: Book/Edit/5
+        // POST: Loan/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId")] BookModel bookModel)
+        public async Task<IActionResult> NewLoan(int id, [Bind("Id,Title,ReleaseYear,Pages,Available,AuthorId,UserId,LoanDate")] BookModel bookModel)
         {
             if (id != bookModel.Id)
             {
@@ -158,11 +138,12 @@ namespace BooksApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", bookModel.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bookModel.UserId);
             return View(bookModel);
         }
 
-        // GET: Book/Delete/5
+        // GET: Loan/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -172,6 +153,7 @@ namespace BooksApp.Controllers
 
             var bookModel = await _context.Books
                 .Include(b => b.Author)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bookModel == null)
             {
@@ -181,7 +163,7 @@ namespace BooksApp.Controllers
             return View(bookModel);
         }
 
-        // POST: Book/Delete/5
+        // POST: Loan/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

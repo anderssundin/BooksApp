@@ -20,6 +20,15 @@ namespace BooksApp.Models
         [Display(Name = "Författare")]
         public AuthorModel? Author { get; set; }
 
+         [Display(Name = "Låntagares id")]
+        public int? UserId { get; set; } // Foreign key
+        [Display(Name = "Låntagare")]
+        public UserModel? User { get; set; }
+
+        public DateTime? LoanDate {get; set;}
+
+
+
 
     }
 }

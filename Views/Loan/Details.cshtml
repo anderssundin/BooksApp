@@ -4,70 +4,54 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Detaljer</h1>
+<h1>Details</h1>
 
 <div>
-
+    <h4>BookModel</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ReleaseYear)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ReleaseYear)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Pages)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Pages)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Available)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Available)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Author)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Author.Name)
-
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Author.Id)
         </dd>
-        @if (Model.UserId != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.User)
-            </dt>
-            <dd class="col-sm-10">
-
-
-                @Model.User.Name
-
-
-            </dd>
-        }
-
-
-        @if (Model.UserId != null)
-        {
-            <dt class="col-sm-2">
-                Utlåningsdatum/Tid
-            </dt>
-            <dd class="col-sm-10">
-                @Model.LoanDate
-            </dd>
-        }
-
-
-
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LoanDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LoanDate)
+        </dd>
     </dl>
 </div>
 <div>
