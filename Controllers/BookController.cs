@@ -75,7 +75,7 @@ namespace BooksApp.Controllers
                     // Hämta Id för den nyligen tillagda författaren
                     int newAuthorId = author.Id;
 
-                     bookModel.AuthorId = newAuthorId;
+                    bookModel.AuthorId = newAuthorId;
                 }
 
                 _context.Add(bookModel);
@@ -85,6 +85,8 @@ namespace BooksApp.Controllers
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
             return View(bookModel);
         }
+
+     
 
         // GET: Book/Edit/5
         public async Task<IActionResult> Edit(int? id)
