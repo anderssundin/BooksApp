@@ -20,25 +20,25 @@ namespace BooksApp.Controllers
         }
 
         // GET: Loan
-     
 
 
-         public async Task<IActionResult> Index(string? searchParam)
+
+        public async Task<IActionResult> Index(string? searchParam)
         {
             if (searchParam != null)
             {
                 string searchString = searchParam;
                 IEnumerable<BookModel> bookTitle = await _context.Books
                  .Where(b => EF.Functions.Like(b.Title, $"%{searchString}%"))
-                 .Include(c=> c.Author)
+                 .Include(c => c.Author)
                 .ToListAsync();
 
 
                 return View(bookTitle);
             }
-            
-              var bookContext = _context.Books.Include(b => b.Author);
-              
+
+            var bookContext = _context.Books.Include(b => b.Author);
+
             return View(await bookContext.ToListAsync());
         }
 
@@ -141,6 +141,53 @@ namespace BooksApp.Controllers
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bookModel.UserId);
             return View(bookModel);
+        }
+
+        // GET: Loan/Edit/5
+        public async Task<IActionResult> ReturnBook(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var bookModel = await _context.Books.FindAsync(id);
+            if (bookModel == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(bookModel);
+        }
+
+        // POST: Loan/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcceptReturn (int? id)
+        {
+              if (id == null)
+            {
+                return NotFound();
+            }
+
+            var bookModel = await _context.Books.FindAsync(id);
+            if (bookModel == null)
+            {
+                return NotFound();
+            }
+
+            // Sätt fälten till null
+            bookModel.UserId = null;
+            bookModel.LoanDate = null;
+            bookModel.Available = true;
+
+            // Spara ändringarna i databasen
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Loan/Delete/5

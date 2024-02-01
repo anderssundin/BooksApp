@@ -1,10 +1,10 @@
 @model IEnumerable<BooksApp.Models.BookModel>
 
 @{
-    ViewData["Title"] = "Sök bok";
+    ViewData["Title"] = "Låna";
 }
 
-<h1>Sök efter boktitel</h1>
+<h1>Låna en bok</h1>
 
 <form method="post" class="form-inline">
     <div class="form-group mb-2">
@@ -62,7 +62,11 @@
                     }
                 </td>
                 <td>
+                   @if (item.Available){
                     <a asp-action="NewLoan" asp-route-id="@item.Id">Låna</a>
+                    } else {
+                        <p>Bok utlånad |  <a asp-action="ReturnBook" asp-route-id="@item.Id">Återlämna bok</a></p> 
+                    }
                     @* <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> | *@
                     @* <a asp-action="Delete" asp-route-id="@item.Id">Radera</a> *@
                 </td>
