@@ -7,6 +7,7 @@ namespace BooksApp.Models
         //Properties
 
         public int Id { get; set; }
+        [Required]
         [Display(Name = "Titel")]
         public string? Title { get; set; }
         [Display(Name = "Utgivningsår")]
