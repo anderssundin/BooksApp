@@ -16,7 +16,7 @@ namespace BooksApp.Models
         [Display(Name = "Tillgänglig")]
         public bool Available { get; set; } = true;
         [Display(Name = "Författare")]
-        public int? AuthorId { get; set; }
+        public int? AuthorId { get; set; } // Foreign key
         [Display(Name = "Författare")]
         public AuthorModel? Author { get; set; }
 

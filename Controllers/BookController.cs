@@ -23,10 +23,30 @@ namespace BooksApp.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
+
             var bookContext = _context.Books.Include(b => b.Author);
             return View(await bookContext.ToListAsync());
         }
 
+
+        // SEARCH BOOK
+
+        // GET: Book
+        public async Task<IActionResult> Search(string? searchParam)
+        {
+            if (searchParam != null)
+            {
+                string searchString = searchParam;
+                IEnumerable<BookModel> bookTitle = await _context.Books
+                 .Where(b => EF.Functions.Like(b.Title, $"%{searchString}%"))
+                .ToListAsync();
+
+
+                return View(bookTitle);
+            }
+              var bookContext = _context.Books.Include(b => b.Author);
+            return View(await bookContext.ToListAsync());
+        }
         // GET: Book/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -86,7 +106,7 @@ namespace BooksApp.Controllers
             return View(bookModel);
         }
 
-     
+
 
         // GET: Book/Edit/5
         public async Task<IActionResult> Edit(int? id)

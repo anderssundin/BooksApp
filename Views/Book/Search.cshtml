@@ -1,15 +1,18 @@
 @model IEnumerable<BooksApp.Models.BookModel>
-
+    
 @{
-    ViewData["Title"] = "Start";
+    ViewData["Title"] = "Sök bok";
 }
 
-<h1>Startsida</h1>
-<p>Här listas alla böcker.</p>
+<h1>Sök efter boktitel</h1>
 
-<p>
-    <a asp-action="Create">Lägg till en ny bok</a>
-</p>
+<form method="post">
+<label for="searchParam">Sök titel</label>
+<input type="input" name="searchParam" />
+
+<input type="submit" value="Sök">
+
+</form>
 <table class="table">
     <thead>
         <tr>

@@ -1,0 +1,6 @@
+   string searchParam = "s";
+            var bookTitle = _context.Books
+             .Where(b => EF.Functions.Like(b.Title, $"%{searchParam}%"))
+            .ToList();
+
+            ViewBag.Pages = bookTitle;
