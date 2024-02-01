@@ -1,18 +1,19 @@
 @model IEnumerable<BooksApp.Models.BookModel>
-    
+
 @{
     ViewData["Title"] = "Sök bok";
 }
 
 <h1>Sök efter boktitel</h1>
 
-<form method="post">
-<label for="searchParam">Sök titel</label>
-<input type="input" name="searchParam" />
-
-<input type="submit" value="Sök">
-
+<form method="post" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="searchParam" class="sr-only">Sök titel</label>
+        <input type="text" class="form-control" id="searchParam" name="searchParam" placeholder="Sök titel">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Sök</button>
 </form>
+
 <table class="table">
     <thead>
         <tr>
@@ -35,31 +36,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pages)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Available)
-            </td>
-            <td>
-                @if (item.Author != null){
-                @Html.DisplayFor(modelItem => item.Author.Name)
-            } else {<p> unknown author</p>}
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editera</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pages)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Available)
+                </td>
+                <td>
+                    @if (item.Author != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Author.Name)
+                    }
+                    else
+                    {
+                        <p> unknown author</p>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editera</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
