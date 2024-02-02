@@ -62,8 +62,12 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editera</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                  @if (item.Available == true)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editera</a>
+                        <span>|</span>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> <span>|</span>
                     <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
                 </td>
             </tr>

@@ -43,6 +43,9 @@ namespace BooksApp.Migrations
                     b.Property<bool>("Available")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("LoanDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("Pages")
                         .HasColumnType("INTEGER");
 
@@ -52,11 +55,30 @@ namespace BooksApp.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BooksApp.Models.UserModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BooksApp.Models.BookModel", b =>
@@ -65,10 +87,21 @@ namespace BooksApp.Migrations
                         .WithMany("Books")
                         .HasForeignKey("AuthorId");
 
+                    b.HasOne("BooksApp.Models.UserModel", "User")
+                        .WithMany("Books")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Author");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BooksApp.Models.AuthorModel", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BooksApp.Models.UserModel", b =>
                 {
                     b.Navigation("Books");
                 });

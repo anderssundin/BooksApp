@@ -15,6 +15,8 @@ namespace BooksApp.Data
 
         public DbSet<AuthorModel> Authors { get; set; }
 
+        public DbSet<UserModel> Users {get; set;}
+
     }
 
 }

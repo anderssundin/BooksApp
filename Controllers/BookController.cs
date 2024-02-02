@@ -39,6 +39,7 @@ namespace BooksApp.Controllers
                 string searchString = searchParam;
                 IEnumerable<BookModel> bookTitle = await _context.Books
                  .Where(b => EF.Functions.Like(b.Title, $"%{searchString}%"))
+                 .Include(b => b.Author)
                 .ToListAsync();
 
 
@@ -57,6 +58,7 @@ namespace BooksApp.Controllers
 
             var bookModel = await _context.Books
                 .Include(b => b.Author)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bookModel == null)
             {
@@ -102,7 +104,7 @@ namespace BooksApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Id", bookModel.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", bookModel.AuthorId);
             return View(bookModel);
         }
 
