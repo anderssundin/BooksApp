@@ -39,6 +39,7 @@ namespace BooksApp.Controllers
                 string searchString = searchParam;
                 IEnumerable<BookModel> bookTitle = await _context.Books
                  .Where(b => EF.Functions.Like(b.Title, $"%{searchString}%"))
+                 .Include(b => b.Author)
                 .ToListAsync();
 
 
